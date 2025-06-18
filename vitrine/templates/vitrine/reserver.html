@@ -1,0 +1,27 @@
+<!-- vitrine/templates/vitrine/reserver.html -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Réservation de {{ bien.titre }}</title>
+</head>
+<body>
+    <h1>Réserver : {{ bien.titre }}</h1>
+    <p>{{ bien.description }}</p>
+    <p>Prix : {{ bien.prix }} FCFA</p>
+
+    <form method="post">
+        {% csrf_token %}
+        <label>Nom :</label><br>
+        <input type="text" name="nom" required><br>
+
+        <label>Email :</label><br>
+        <input type="email" name="email" required><br>
+
+        <label>Message :</label><br>
+        <textarea name="message" required></textarea><br>
+
+        <button type="submit">Envoyer la demande de location</button>
+    </form>
+</body>
+</html>

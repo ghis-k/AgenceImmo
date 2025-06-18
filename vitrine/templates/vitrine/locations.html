@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Location de biens immobiliers</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">MonAgence Immo</a>
+        </div>
+    </nav>
+
+    <!-- En-tête -->
+    <header class="bg-light py-5 text-center">
+        <div class="container">
+            <h1 class="display-5">Trouvez votre futur logement</h1>
+            <p class="lead">Maisons, appartements et biens à louer ou à acheter</p>
+        </div>
+    </header>
+
+    <!-- Filtres de recherche -->
+    <section class="container my-4">
+        <form method="get" class="row g-3">
+            <div class="col-md-3">
+                <input type="text" name="ville" class="form-control" placeholder="Ville">
+            </div>
+            <div class="col-md-3">
+                <select name="type" class="form-select">
+                    <option value="">Type de bien</option>
+                    {% for t in type_list %}
+                        <option value="{{ t.id }}">{{ t.nom }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-3">
+                <input type="number" name="loyer_max" class="form-control" placeholder="Loyer max">
+            </div>
+            <div class="col-md-3">
+                <input type="number" name="surface_min" class="form-control" placeholder="Surface min (m²)">
+            </div>
+            <div class="col-12 text-center">
+                <button type="submit" class="btn btn-primary mt-2">Rechercher</button>
+            </div>
+        </form>
+    </section>
+
+    <!-- Liste des biens -->
+    <section class="container my-4">
+        <div class="row">
+            {% for bien in biens %}
+                <div class="col-md-4">
+                    <div class="card mb-4 shadow-sm">
+                        <img src="{{ bien.image.url }}" class="card-img-top" alt="{{ bien.titre }}">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ bien.titre }}</h5>
+                            <p class="card-text">{{ bien.surface }} m² - {{ bien.ville }}</p>
+                            <p class="card-text fw-bold">{{ bien.prix }} FCFA {% if bien.type.nom == 'Location' %}/ mois{% endif %}</p>
+                            <div class="d-flex justify-content-between">
+                                <a href="{% url 'reserver_bien' bien.id %}" class="btn btn-outline-primary">Louer</a>
+                                <a href="{% url 'acheter_bien' bien.id %}" class="btn btn-outline-success">Acheter</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <div class="text-center">
+                    <p class="text-muted">Aucun bien trouvé pour votre recherche.</p>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section class="container my-5">
+        <h2 class="text-center mb-4">Contactez-nous</h2>
+        <form method="post" class="w-75 mx-auto">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <div class="text-center">
+                <button type="submit" class="btn btn-success">Envoyer</button>
+            </div>
+        </form>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white text-center py-3">
+        <div class="container">
+            &copy; 2025 MonAgence Immo. Tous droits réservés.
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

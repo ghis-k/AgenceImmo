@@ -1,0 +1,32 @@
+<!-- vitrine/templates/vitrine/acheter.html -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <title>Acheter {{ bien.nom }}</title>
+</head>
+<body>
+    <h1>Acheter : {{ bien.nom }}</h1>
+    <p>Description : {{ bien.description }}</p>
+    <p>Prix : {{ bien.prix }} €</p>
+    <p>Statut : {% if bien.vendu %}Vendu{% else %}Disponible{% endif %}</p>
+
+    {% if not bien.vendu %}
+    <form method="post">
+        {% csrf_token %}
+        <label for="nom">Nom :</label>
+        <input type="text" name="nom" id="nom" required /><br />
+
+        <label for="email">Email :</label>
+        <input type="email" name="email" id="email" required /><br />
+
+        <label for="message">Message :</label><br />
+        <textarea name="message" id="message"></textarea><br />
+
+        <button type="submit">Confirmer l'achat</button>
+    </form>
+    {% else %}
+    <p>Désolé, ce bien est déjà vendu.</p>
+    {% endif %}
+</body>
+</html>
