@@ -2,6 +2,9 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Bien, Type
 from .forms import ContactForm
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+
 
 def locations(request):
     type_list = Type.objects.all()
@@ -42,8 +45,7 @@ def reserver_bien(request, id):
 
     return render(request, 'vitrine/reserver.html', {'bien': bien})
 
-from django.shortcuts import render, get_object_or_404, redirect
-from .models import Bien
+
 
 def acheter_bien(request, id):
     bien = get_object_or_404(Bien, id=id)
@@ -62,5 +64,39 @@ def acheter_bien(request, id):
         return render(request, 'vitrine/merci.html', {'nom': nom, 'bien': bien})
 
     return render(request, 'vitrine/acheter.html', {'bien': bien})
+
+
+@login_required
+def ajouter_bien(request):
+    if not request.user.is_staff:
+        messages.error(request, "Vous n'avez pas l'autorisation d'accéder à cette page.")
+        return redirect('accueil')
+
+    types = Type.objects.all()
+
+    if request.method == 'POST':
+        titre = request.POST.get('titre')
+        ville = request.POST.get('ville')
+        surface = request.POST.get('surface')
+        prix = request.POST.get('prix')
+        image = request.FILES.get('image')
+        type_id = request.POST.get('type')
+
+        type_obj = Type.objects.get(id=type_id)
+
+        bien = Bien(
+            titre=titre,
+            ville=ville,
+            surface=surface,
+            prix=prix,
+            image=image,
+            type=type_obj,
+            vendu=False,
+        )
+        bien.save()
+        messages.success(request, "Bien ajouté avec succès !")
+        return redirect('locations')
+
+    return render(request, 'vitrine/ajouter_bien.html', {'types': types})
 
 

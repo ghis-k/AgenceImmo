@@ -34,9 +34,9 @@
                     {% for t in type_list %}
                         <option value="{{ t.id }}">{{ t.nom }}</option>
                     {% endfor %}
-                </select>
+                </sealect>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <input type="number" name="loyer_max" class="form-control" placeholder="Loyer max">
             </div>
             <div class="col-md-3">
@@ -47,32 +47,37 @@
             </div>
         </form>
     </section>
+    
+
 
     <!-- Liste des biens -->
-    <section class="container my-4">
-        <div class="row">
-            {% for bien in biens %}
-                <div class="col-md-4">
-                    <div class="card mb-4 shadow-sm">
-                        <img src="{{ bien.image.url }}" class="card-img-top" alt="{{ bien.titre }}">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ bien.titre }}</h5>
-                            <p class="card-text">{{ bien.surface }} m² - {{ bien.ville }}</p>
-                            <p class="card-text fw-bold">{{ bien.prix }} FCFA {% if bien.type.nom == 'Location' %}/ mois{% endif %}</p>
-                            <div class="d-flex justify-content-between">
-                                <a href="{% url 'reserver_bien' bien.id %}" class="btn btn-outline-primary">Louer</a>
-                                <a href="{% url 'acheter_bien' bien.id %}" class="btn btn-outline-success">Acheter</a>
-                            </div>
+  <section class="container my-4">
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        {% for bien in biens %}
+            <div class="col">
+                <div class="card h-100 shadow-sm">
+                    <img src="{{ bien.image.url }}" class="card-img-top" alt="{{ bien.titre }}" style="height: 200px; object-fit: cover;">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">{{ bien.titre }}</h5>
+                        <p class="card-text">{{ bien.surface }} m² - {{ bien.ville }}</p>
+                        <p class="card-text fw-bold">
+                            {{ bien.prix }} FCFA {% if bien.type.nom == 'Location' %}/ mois{% endif %}
+                        </p>
+                        <div class="mt-auto d-flex justify-content-between">
+                            <a href="{% url 'reserver_bien' bien.id %}" class="btn btn-outline-primary">Louer</a>
+                            <a href="{% url 'acheter_bien' bien.id %}" class="btn btn-outline-success">Acheter</a>
                         </div>
                     </div>
                 </div>
-            {% empty %}
-                <div class="text-center">
-                    <p class="text-muted">Aucun bien trouvé pour votre recherche.</p>
-                </div>
-            {% endfor %}
-        </div>
-    </section>
+            </div>
+        {% empty %}
+            <div class="text-center">
+                <p class="text-muted">Aucun bien trouvé pour votre recherche.</p>
+            </div>
+        {% endfor %}
+    </div>
+</section>
+
 
     <!-- Contact -->
     <section class="container my-5">
