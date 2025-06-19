@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <title>Acheter {{ bien.titre }}</title>
+</head>
+<body>
+    <h1>Acheter : {{ bien.titre }}</h1>
+    <p>Description : {{ bien.description }}</p>
+    <p>Prix : {{ bien.prix }} FCFA</p>
+    <p>Statut : {% if bien.statut == 'vendu' %}Déjà vendu{% else %}Disponible{% endif %}</p>
+
+    {% if bien.statut != 'vendu' %}
+        {% if user.is_authenticated %}
+            <form method="post">
+                {% csrf_token %}
+                <button type="submit">Confirmer l'achat</button>
+            </form>
+        {% else %}
+            <p>
+                Vous devez 
+                <a href="{% url 'login' %}?next={{ request.path }}">vous connecter</a> ou 
+                <a href="{% url 'register' %}?next={{ request.path }}">vous inscrire</a> 
+                pour acheter ce bien.
+            </p>
+        {% endif %}
+    {% else %}
+        <p>Ce bien a déjà été vendu.</p>
+    {% endif %}
+</body>
+</html>
+

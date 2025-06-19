@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <title>Ajouter un bien</title>
+</head>
+<body>
+    <h1>Ajouter un nouveau bien immobilier</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <label for="titre">Titre :</label><br />
+        <input type="text" name="titre" id="titre" required /><br /><br />
+
+        <label for="ville">Ville :</label><br />
+        <input type="text" name="ville" id="ville" required /><br /><br />
+
+        <label for="surface">Surface (m²) :</label><br />
+        <input type="number" name="surface" id="surface" required /><br /><br />
+
+        <label for="prix">Prix (FCFA) :</label><br />
+        <input type="number" name="prix" id="prix" required /><br /><br />
+
+        <label for="image">Image :</label><br />
+        <input type="file" name="image" id="image" accept="image/*" required /><br /><br />
+
+        <label for="type">Type de bien :</label><br />
+        <select name="type" id="type" required>
+            {% for t in types %}
+                <option value="{{ t.id }}">{{ t.nom }}</option>
+            {% endfor %}
+        </select><br /><br />
+
+        <button type="submit">Ajouter</button>
+    </form>
+</body>
+</html>

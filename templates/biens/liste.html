@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}Liste des biens{% endblock %}
+
+{% block content %}
+<h2>Biens disponibles</h2>
+<form method="get">
+    <select name="type">
+        <option value="">-- Type --</option>
+        {% for t in types %}
+        <option value="{{ t.id }}">{{ t.nom }}</option>
+        {% endfor %}
+    </select>
+    <button type="submit">Filtrer</button>
+</form>
+
+<div class="row">
+    {% for bien in biens %}
+    <div class="col-md-4">
+        <div class="card mb-3">
+            <img src="{{ bien.image.url }}" class="card-img-top" alt="{{ bien.titre }}">
+            <div class="card-body">
+                <h5>{{ bien.titre }}</h5>
+                <p>{{ bien.adresse }}</p>
+                <p><strong>{{ bien.prix }} FCFA</strong></p>
+                <a href="{% url 'bien_detail' bien.id %}" class="btn btn-primary">Voir plus</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
